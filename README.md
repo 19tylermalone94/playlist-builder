@@ -1,14 +1,14 @@
 # playlist-builder
 
-# Overview
+## Overview
 
 Outputs song recommendations and playlists based on user song preference.
 
-# How to use
+## How to use
 
 The app is currently hosted at https://playlist-builder-rust.vercel.app/. Right now you can search for songs and view the audio features.
 
-# TODO
+## TODO
 
  * get user selections
  * get random population of songs
