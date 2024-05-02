@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { fetchTracks, fetchAudioFeatures } from './spotifyService';
+import './App.css';
 import { useSpotifyAuth } from './useSpotifyAuth';
 import TrackList from './components/TrackList';
+import AudioFeatures from './components/AudioFeatures'; // Make sure to import the new component
 
 const App = () => {
   const client_id = process.env.REACT_APP_CLIENT_ID;
@@ -33,23 +35,18 @@ const App = () => {
 
   return (
     <div>
-        <h1>Spotify Audio Features</h1>
-        <form onSubmit={handleSearch}>
-          <input 
-            type="text" 
-            value={search} 
-            onChange={(e) => setSearch(e.target.value)} 
-            placeholder="Search for a song"
-          />
-          <button type="submit">Search</button>
-        </form>
-        <TrackList tracks={tracks} onTrackSelect={handleTrackSelect} />
-        {features && (
-          <div>
-            <h2>Audio Features</h2>
-            <pre>{JSON.stringify(features, null, 2)}</pre>
-          </div>
-        )}
+      <h1>Spotify Audio Features</h1>
+      <form onSubmit={handleSearch}>
+        <input 
+          type="text" 
+          value={search} 
+          onChange={(e) => setSearch(e.target.value)} 
+          placeholder="Search for a song"
+        />
+        <button type="submit">Search</button>
+      </form>
+      <TrackList tracks={tracks} onTrackSelect={handleTrackSelect} />
+      {features && <AudioFeatures features={features} />}
     </div>
   );
 };
