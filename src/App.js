@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { fetchTracks, fetchAudioFeatures } from './spotifyService';
 import './App.css';
 import { useSpotifyAuth } from './useSpotifyAuth';
-import TrackList from './components/TrackList';
-import AudioFeatures from './components/AudioFeatures'; // Make sure to import the new component
+import SearchList from './components/SearchList';
+import AudioFeatures from './components/AudioFeatures';
+import SearchTrack from './components/SearchTrack';
 
 const App = () => {
   const client_id = process.env.REACT_APP_CLIENT_ID;
@@ -13,6 +14,7 @@ const App = () => {
   const [search, setSearch] = useState('');
   const [tracks, setTracks] = useState([]);
   const [features, setFeatures] = useState(null);
+  const [selectedTracks, setSelectedTracks] = useState([]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -24,13 +26,21 @@ const App = () => {
     }
   };
 
-  const handleTrackSelect = async (trackId) => {
-    try {
-      const response = await fetchAudioFeatures(trackId, token);
-      setFeatures(response.data);
-    } catch (error) {
-      console.error('Error fetching audio features', error);
+  const handleTrackSelect = (track) => {
+    if (selectedTracks.length >= 5) {
+      alert('You can only select up to 5 songs.');
+      return;
     }
+    setSelectedTracks(prev => [...prev, track]);
+  };
+
+  const handleRemoveTrack = (trackId) => {
+    setSelectedTracks(prev => prev.filter(t => t.id !== trackId));
+  };
+
+  const handleStartCalculations = () => {
+    console.log("Starting calculations with the following tracks:", selectedTracks);
+    // Add your calculation logic here
   };
 
   return (
@@ -45,8 +55,19 @@ const App = () => {
         />
         <button type="submit">Search</button>
       </form>
-      <TrackList tracks={tracks} onTrackSelect={handleTrackSelect} />
+      <SearchList tracks={tracks} onTrackSelect={handleTrackSelect} />
       {features && <AudioFeatures features={features} />}
+      <div>
+        <h2>Selected Songs</h2>
+        {selectedTracks.map(track => (
+          <SearchTrack key={track.id} track={track} onSelect={() => handleRemoveTrack(track.id)} />
+        ))}
+      </div>
+      {selectedTracks.length === 5 && (
+        <button onClick={handleStartCalculations} style={{ marginTop: '20px' }}>
+          Start
+        </button>
+      )}
     </div>
   );
 };
