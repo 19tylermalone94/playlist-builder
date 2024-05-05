@@ -19,22 +19,20 @@ export const fetchAudioFeatures = (trackId, token) => {
 };
 
 export const fetchRandomTracks = async (token) => {
-  const numSearches = 10; // Number of searches to perform
-  const tracksPerSearch = 10; // Number of tracks to fetch per search
+  const numSearches = 10;
+  const tracksPerSearch = 10;
   let collectedTracks = [];
 
-  // Function to generate a random search query
   const generateRandomSearchQuery = () => {
     const alphabet = "abcdefghijklmnopqrstuvwxyz";
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
     return `%${randomLetter}%`;
   };
 
-  // Perform searches
   for (let i = 0; i < numSearches; i++) {
     const searchQuery = generateRandomSearchQuery();
     try {
-      const response = await fetchTracks(searchQuery, token); // Make sure this function handles the search correctly
+      const response = await fetchTracks(searchQuery, token);
       const tracks = response.data.tracks.items;
       if (tracks.length > 0) {
         collectedTracks.push(...tracks.slice(0, tracksPerSearch));
@@ -44,6 +42,5 @@ export const fetchRandomTracks = async (token) => {
     }
   }
 
-  // Trim the collectedTracks array to the maximum size of 100
   return collectedTracks.slice(0, 100);
 };
