@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { fetchTracks, fetchAudioFeatures } from './spotifyService'; // Assuming fetchTracks is defined correctly in spotifyService
+import { fetchTracks, fetchRandomTracks, fetchAudioFeatures } from './spotifyService';
 import './App.css';
 import { useSpotifyAuth } from './useSpotifyAuth';
 import SearchList from './components/SearchList';
@@ -44,8 +43,11 @@ const App = () => {
     const randomTracks = await fetchRandomTracks(token);
     if (randomTracks.length > 0) {
       console.log("Normalizing features...");
-      const normalizedData = await fetchAndNormalizeFeatures(randomTracks, token);
-      console.log("Normalized Data Matrix:", normalizedData);
+      const allFeatures = await fetchAndNormalizeFeatures(randomTracks, token);
+      const selectedFeatures = await fetchAndNormalizeFeatures(selectedTracks, token);
+      console.log("Performing K-means clustering...");
+      const clusters = await kMeansClustering(selectedFeatures, allFeatures);
+      console.log("Clusters formed:", clusters);
     } else {
       console.log("No tracks fetched.");
     }
@@ -60,11 +62,10 @@ const App = () => {
         features.push(response.data);
       } catch (error) {
         if (error.response && error.response.status === 429) {
-          // Handle rate limiting
           const retryAfter = error.response.headers['retry-after'] ? parseInt(error.response.headers['retry-after']) : 10;
           console.log(`Rate limit hit, retrying after ${retryAfter} seconds...`);
           await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
-          continue; // Retry the loop iteration after the delay
+          continue;
         } else {
           console.error('Error fetching audio features for track ID:', track.id, error);
         }
@@ -73,51 +74,47 @@ const App = () => {
     return normalizeFeatures(features);
   };
 
-  const getRandomLetter = () => {
-    const alphabet = "abcdefghijklmnopqrstuvwxyz";
-    return alphabet[Math.floor(Math.random() * alphabet.length)];
-  };
+  const kMeansClustering = (selectedFeatures, allFeatures, iterations = 10) => {
+    let centroids = selectedFeatures.slice(0, 5);
+    let clusters = [];
 
-  const generateRandomSearchQuery = () => {
-    return `%${getRandomLetter()}%`;
-  };
+    for (let it = 0; it < iterations; it++) {
+      clusters = centroids.map(() => []);
+      allFeatures.forEach((feature, index) => {
+        const distances = centroids.map(centroid =>
+          Math.sqrt(Object.keys(centroid).reduce((sum, key) => sum + Math.pow((centroid[key] - feature[key]), 2), 0))
+        );
+        const closestCentroidIndex = distances.indexOf(Math.min(...distances));
+        clusters[closestCentroidIndex].push({ index, feature });
+      });
 
-  const fetchRandomTracks = async (token) => {
-    const numSearches = 20;
-    const tracksPerSearch = 5;
-    let collectedTracks = [];
-
-    for (let i = 0; i < numSearches; i++) {
-      const searchQuery = generateRandomSearchQuery();
-      try {
-        const response = await fetchTracks(searchQuery, token);
-        const tracks = response.data.tracks.items;
-        if (tracks.length > 0) {
-          collectedTracks.push(...tracks.slice(0, tracksPerSearch));
-        }
-      } catch (error) {
-        console.error('Error fetching tracks with query:', searchQuery, error);
-      }
+      centroids = clusters.map(cluster => {
+        const centroid = {};
+        const keys = Object.keys(cluster[0].feature);
+        keys.forEach(key => {
+          centroid[key] = cluster.reduce((sum, obj) => sum + obj.feature[key], 0) / cluster.length;
+        });
+        return centroid;
+      });
     }
 
-    return collectedTracks.slice(0, 100);
+    return clusters.map(cluster => cluster.slice(0, 5).map(obj => tracks[obj.index])); // Assumes tracks array is accessible
   };
 
   const normalizeFeatures = (features) => {
     if (!features.length) return [];
-  
     const featureKeys = Object.keys(features[0]);
     const means = {};
     const stdDevs = {};
-  
+
     featureKeys.forEach(key => {
-      const values = features.map(f => f[key]).filter(v => !isNaN(v)); // Filter out non-numeric values before processing
+      const values = features.map(f => f[key]).filter(v => !isNaN(v));
       const mean = values.reduce((a, b) => a + b, 0) / values.length;
       const stdDev = Math.sqrt(values.map(v => (v - mean) ** 2).reduce((a, b) => a + b, 0) / values.length);
       means[key] = mean;
       stdDevs[key] = stdDev;
     });
-  
+
     return features.map(feature => {
       const normalized = {};
       featureKeys.forEach(key => {
@@ -141,7 +138,7 @@ const App = () => {
         />
         <button type="submit">Search</button>
       </form>
-      <SearchList tracks={tracks} onTrack Select={handleTrackSelect} />
+      <SearchList tracks={tracks} onTrackSelect={handleTrackSelect} />
       {features && <AudioFeatures features={features} />}
       <div>
         <h2>Selected Songs</h2>
