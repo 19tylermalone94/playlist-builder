@@ -1,5 +1,6 @@
 class Track {
-  constructor(trackName, artistName, albumArtUrl, features) {
+  constructor(id, trackName, artistName, albumArtUrl, features) {
+    this.id = id;
     this.trackName = trackName;
     this.artistName = artistName;
     this.albumArtUrl = albumArtUrl;

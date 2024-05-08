@@ -85,8 +85,8 @@ tr:nth-child(even) {
 }
 
 .albumArt {
-  width: 80px;
-  height: 80px;
+  width: 50;
+  height: 50px;
   border-radius: 5px; /* Slightly rounded corners for the image */
   margin-right: 20px; /* Space between the image and the text */
   object-fit: cover;
@@ -115,4 +115,35 @@ tr:nth-child(even) {
   margin: 0 auto;
   max-width: 1200px;
   padding: 10%px;
+}
+
+.dropdown {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.dropdown ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dropdown ul li {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
 }

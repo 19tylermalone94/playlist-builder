@@ -28,11 +28,12 @@ export function useSpotifyService() {
     const ids = items.map(item => item.id);
     const featuresList = await getFeaturesSeveralTracks(ids);
     return items.map((item, index) => {
+      const id = item.id;
       const trackName = item.name;
       const artistName = item.artists.map(artist => artist.name).join(", ");
       const albumArtUrl = item.album.images[0]?.url || '';
       const features = featuresList[index];
-      return new Track(trackName, artistName, albumArtUrl, features);
+      return new Track(id, trackName, artistName, albumArtUrl, features);
     });
   };
 

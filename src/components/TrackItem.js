@@ -1,8 +1,9 @@
 import React from 'react';
 
-const TrackItem = ({ track }) => {
+const TrackItem = ({ track, onClick, isSelected }) => {
+  const itemStyle = isSelected ? { backgroundColor: '#e8e8e8' } : {};
   return (
-    <div className="trackItem">
+    <div className="trackItem" onClick={onClick} style={itemStyle}>
       <img src={track.albumArtUrl} alt={`Cover art for ${track.trackName}`} className="albumArt" />
       <div className="textContainer">
         <h3 className="trackName">{track.trackName}</h3>
