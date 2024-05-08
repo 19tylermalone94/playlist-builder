@@ -15,3 +15,8 @@ The app is currently hosted at https://playlist-builder-rust.vercel.app/. Right 
  * normalize all data
  * perform kmeans
  * output recommendations
+
+
+### Credits
+
+  * The 114,000 track IDs used for random song selection are from this dataset: https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset

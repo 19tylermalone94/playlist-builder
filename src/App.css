@@ -73,3 +73,46 @@ tr:nth-child(even) {
 .TrackList, .AudioFeatures {
   margin-top: 20px;
 }
+
+.trackItem {
+  display: flex;
+  align-items: center; /* Vertically align items in the center */
+  margin-bottom: 20px; /* Space between each track item */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.albumArt {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px; /* Slightly rounded corners for the image */
+  margin-right: 20px; /* Space between the image and the text */
+  object-fit: cover;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.trackName {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.artistName {
+  margin-top: 4px; /* Small top margin to space out track name and artist name */
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+.App {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 10%px;
+}
