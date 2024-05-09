@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSpotifyService } from './useSpotifyService';
 import TrackItem from './components/TrackItem';
 import './App.css';
+
+const messages = [
+  "Loading data...",
+  "Normalizing Features...",
+  "Clustering...",
+  "Almost there..."
+];
 
 const App = () => {
   const [isHome, setIsHome] = useState(true);
@@ -12,6 +19,18 @@ const App = () => {
   const { getTracksBySearch, getClusters } = useSpotifyService();
   const [clusters, setClusters] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentMessage, setCurrentMessage] = useState(0);
+
+  useEffect(() => {
+    if (isLoading) {
+      const intervalId = setInterval(() => {
+        setCurrentMessage(prev => (prev + 1) % messages.length);
+      }, 3000); // Change message every 3 seconds
+
+      return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    }
+  }, [isLoading]);
 
 
   const handleHome = () => {
@@ -21,6 +40,7 @@ const App = () => {
     setSearchQuery('');
     setSelectedTracks([]);
     setClusters([]);
+    setIsLoading(false);
   };
 
   const handleNewPlaylist = () => {
@@ -28,6 +48,7 @@ const App = () => {
     setIsSearching(true);
     setSelectedTracks([]);
     setClusters([]);
+    setIsLoading(false);
   };
 
   const handleSearch = async () => {
@@ -64,10 +85,12 @@ const App = () => {
   const handleStartCalculations = async () => {
     console.log("Starting calculations with these tracks:", selectedTracks);
     setIsSearching(false);
+    setIsLoading(true);
     try {
       const result = await getClusters(selectedTracks.map(track => track.id));
       console.log("Cluster results:", result);
-      setClusters(result.clusters);
+      setClusters(result.trackClusters);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error in starting calculations:", error);
     }
@@ -80,11 +103,16 @@ const App = () => {
   return (
     <div className="App">
       <div className='header' >
+        <img src="/logo_raw.png" alt="Home" />
         <h1 className='title'>Playlist Builder</h1>
-        <button className='homeButton' onClick={handleHome}>
-          <img src="/logo_raw.png" alt="Home" />
-        </button>
+        <img src="/logo_raw.png" alt="Home" />
       </div>
+      {isLoading && (
+        <div className="loading">
+          <div className="spinner"></div>
+          <div className="loading-message">{messages[currentMessage]}</div>
+        </div>
+      )}
       {isHome && (
         <div className='makePlaylist'>
           <button onClick={handleNewPlaylist}>Make a New Playlist</button>
@@ -133,7 +161,7 @@ const App = () => {
       )}
 
       {clusters.length > 0 && (
-      <>
+      <div className='cluster-results-container'>
         <button className='returnButton' onClick={handleHome}>Return</button>
         {clusters.map((cluster, index) => (
           <div key={index} className="cluster-results">
@@ -145,9 +173,10 @@ const App = () => {
             </ul>
           </div>
         ))}
-      </>
+      </div>
     )}
       <div className='footer'>
+      <img src="/spotify.jpeg" alt="spotify_icon" />
         <h2>Powered by Spotify's API</h2>
         <img src="/spotify.jpeg" alt="spotify_icon" />
       </div>

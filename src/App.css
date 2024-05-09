@@ -149,6 +149,14 @@ button:hover {
   font-style: italic;
 }
 
+.cluster-results-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .cluster-results {
   margin-top: 20px;
   padding: 10px;
@@ -184,6 +192,14 @@ button:hover {
   align-items: center;
   box-shadow: 1px 2px 5px var(--border-color);
   border-radius: 8px;
+}
+
+.header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border-style: dotted;
+  border-color: var(--button-bg-color);
 }
 
 .footer {
@@ -264,3 +280,48 @@ button:hover {
 .pulsing {
   animation: pulseAnimation 2s ease-in-out infinite;
 }
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.spinner {
+  border: 6px solid rgba(0, 0, 0, 0.1);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border-left-color: var(--button-bg-color);
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: var(--text-color);
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -1,10 +1,11 @@
 import { useSpotifyToken } from './SpotifyAuthContext';
 import { kmeansClusters } from './kmeans';
 import Track from './Track';
+import SimpleTrack from './SimpleTrack';
 import axios from 'axios';
 
 const BASE_URL = 'https://api.spotify.com/v1';
-const TRACK_IDS_FILE_PATH = '/track_ids.csv';
+const TRACKS_FILE_PATH = '/tracks.csv';
 
 export function useSpotifyService() {
   const token = useSpotifyToken();
@@ -37,6 +38,20 @@ export function useSpotifyService() {
     });
   };
 
+  const createSimpleTracks = async (items) => {
+    const ids = items.map(item => item.id);
+    const featuresList = await getFeaturesSeveralTracks(ids);
+    return items.map((item, index) => {
+      const id = item.id;
+      const features = featuresList[index];
+      return new SimpleTrack(id, features);
+    });
+  };
+
+  const simpleTracksToTracks = async (simpleTracks) => {
+    return await createTracks(await getSeveralTracks(simpleTracks.map(st => st.id)));
+  };
+
   const getFeaturesSeveralTracks = async (trackIDs) => {
     try {
       const response = await axios({
@@ -65,13 +80,36 @@ export function useSpotifyService() {
   };
 
   const getClusters = async (trackIDs) => {
-    const userTracks = await createTracks(await getSeveralTracks(trackIDs));
-    const randomTracks = await getRandomTracks();
-    return kmeansClusters(userTracks, randomTracks);
-  };
+    const userTracks = await createSimpleTracks(await getSeveralTracks(trackIDs));
+    const population = await getTracksFromFile();
+    const { centroids, topTenClusters } = kmeansClusters(userTracks, population);
+    const trackCentroids = await simpleTracksToTracks(centroids);
+    const trackClusters = await Promise.all(topTenClusters.map(async (cluster) => {
+        return await simpleTracksToTracks(cluster);
+    }));
 
-  const getRandomTracks = async () => {
-    return await createTracks(await getSeveralTracks(await getRandomTrackIDs(100)));
+    console.log("getClusters");
+    console.log(trackClusters);
+
+    return { trackCentroids, trackClusters };
+};
+
+  const getTracksFromFile = async () => {
+    try {
+      const response = await fetch(TRACKS_FILE_PATH);
+      const text = await response.text();
+      const lines = text.split('\n').filter(line => line.trim());
+      const tracks = lines.map(line => {
+        const parts = line.split(',');
+        const id = parts[0];
+        const features = parts.slice(1).map(Number);
+        return new SimpleTrack(id, features);
+      });
+      return tracks;
+    } catch (error) {
+      console.error('Error fetching tracks from file:', error);
+      return [];
+    }
   };
 
   const getSeveralTracks = async (trackIDs) => {
@@ -101,26 +139,6 @@ export function useSpotifyService() {
       }
     }
     return allTracks;
-  };
-
-  const getRandomTrackIDs = async (numIDs) => {
-    try {
-      const response = await fetch(TRACK_IDS_FILE_PATH);
-      const data = await response.text();
-      const trackIDs = data.split('\n').map(line => line.trim()).filter(Boolean);
-      return shuffleArray(trackIDs).slice(0, numIDs);
-    } catch (error) {
-      console.error('Error fetching random track IDs:', error);
-      return [];
-    }
-  };
-
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
   };
 
   return {

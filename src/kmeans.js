@@ -1,14 +1,12 @@
-export const kmeansClusters = (userSelectedTracks, randomTracks) => {
+export const kmeansClusters = (userSelectedTracks, rawPopulation) => {
   const centroids = normalize(userSelectedTracks);
-  const rawPopulation = normalize(randomTracks);
-
-  const population = getClosest50(rawPopulation, centroids);
+  const population = normalize(rawPopulation);
 
   console.log('Initial centroids:', centroids);
   console.log('Population:', population);
 
   let clusters = Array(centroids.length).fill().map(() => []);
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     clusters = Array(centroids.length).fill().map(() => []);
     population.forEach(track => {
       let closestCentroidIndex = 0;
@@ -29,9 +27,24 @@ export const kmeansClusters = (userSelectedTracks, randomTracks) => {
     });
   }
 
-  console.log('Final centroids:', centroids);
-  console.log('Clusters:', clusters);
-  return { centroids, clusters };
+  const topTenClusters = clusters.map(cluster => {
+    const seen = new Set();
+    const sorted = cluster.sort((a, b) => {
+      return euclideanDistance(a.features, centroids[clusters.indexOf(cluster)].features) - euclideanDistance(b.features, centroids[clusters.indexOf(cluster)].features);
+    });
+    const topTen = [];
+    for (let track of sorted) {
+      if (!seen.has(track.id)) {
+        topTen.push(track);
+        seen.add(track.id);
+        if (topTen.length === 10) break;
+      }
+    }
+    return topTen;
+  });
+  
+  console.log('Top 10 Tracks in Clusters:', topTenClusters);
+  return { centroids, topTenClusters };
 };
 
 const normalize = (tracks) => {
@@ -49,18 +62,6 @@ const normalize = (tracks) => {
     }
     return { ...track, features: normalizedFeatures };
   });
-};
-
-const getClosest50 = (rawPopulation, centroids) => {
-  const avgSelectedFeatures = averageFeatures(centroids);
-  const distances = rawPopulation.map(track => {
-    return {
-      track,
-      distance: euclideanDistance(track.features, avgSelectedFeatures)
-    };
-  });
-  distances.sort((a, b) => a.distance - b.distance);
-  return distances.slice(0, 50).map(item => item.track);
 };
 
 const euclideanDistance = (features1, features2) => {
