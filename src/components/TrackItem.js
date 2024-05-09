@@ -4,14 +4,16 @@ const TrackItem = ({ track, onClick, isSelected }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const itemStyle = isSelected ? { backgroundColor: '#88864d' } : {};
 
-  // Toggle play/pause for preview
   const handlePlayPause = (event) => {
-    event.stopPropagation(); // Prevent the onClick event from firing when the button is clicked
+    event.stopPropagation();
     setIsPlaying(!isPlaying);
   };
 
+  // Conditional class for animation
+  const animationClass = isPlaying ? 'trackItem pulsing' : 'trackItem';
+
   return (
-    <div className="trackItem" onClick={onClick} style={itemStyle}>
+    <div className={animationClass} onClick={onClick} style={itemStyle}>
       <img src={track.albumArtUrl} alt={`Cover art for ${track.trackName}`} className="albumArt" />
       <div className="textContainer">
         <h3 className="trackName">{track.trackName}</h3>

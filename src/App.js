@@ -80,6 +80,7 @@ const App = () => {
   return (
     <div className="App">
       <div className='header' >
+        <h1 className='title'>Playlist Builder</h1>
         <button className='homeButton' onClick={handleHome}>
           <img src="/logo_raw.png" alt="Home" />
         </button>
@@ -107,7 +108,9 @@ const App = () => {
           </div>
           <div className={`search-results ${searchResults.length > 0 ? 'show' : ''}`}>
             {searchResults.map((track) => (
+            <ul>
               <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} isSelected={selectedTracks.includes(track)} />
+            </ul>
             ))}
           </div>
         </div>
