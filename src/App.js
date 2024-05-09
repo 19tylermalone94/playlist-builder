@@ -61,12 +61,6 @@ const App = () => {
     }
   };
 
-  const removeSelection = (track) => {
-    const newSelection = selectedTracks.filter(t => t.id !== track.id);
-    setSelectedTracks(newSelection);
-  };
-  
-
   const handleStartCalculations = async () => {
     console.log("Starting calculations with these tracks:", selectedTracks);
     setIsSearching(false);
@@ -148,7 +142,7 @@ const App = () => {
       ))}
       <div className='footer'>
         <h2>Powered by Spotify's API</h2>
-        <img src="/spotify.png" alt="spotify_icon" />
+        <img src="/spotify.jpeg" alt="spotify_icon" />
       </div>
     </div>
   );
