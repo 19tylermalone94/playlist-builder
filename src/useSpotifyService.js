@@ -48,7 +48,7 @@ export function useSpotifyService() {
         return [
           item.acousticness,
           item.danceability,
-          item.duration, 
+          item.duration_ms, 
           item.energy,
           item.instrumentalness,
           item.liveness,
