@@ -8,7 +8,8 @@ const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTracks, setSelectedTracks] = useState([]);
-  const { getTracksBySearch } = useSpotifyService();
+  const { getTracksBySearch, getClusters } = useSpotifyService();
+  const [clusters, setClusters] = useState([]);
 
   const handleNewPlaylist = () => {
     setIsSearching(true); // Show the search bar
@@ -46,10 +47,17 @@ const App = () => {
   };
   
 
-  const handleStartCalculations = () => {
+  const handleStartCalculations = async () => {
     console.log("Starting calculations with these tracks:", selectedTracks);
-    // Implement calculation logic or API calls here
+    try {
+      const result = await getClusters(selectedTracks.map(track => track.id));
+      console.log("Cluster results:", result);
+      setClusters(result.clusters); // Assuming result.clusters is an array of cluster objects
+    } catch (error) {
+      console.error("Error in starting calculations:", error);
+    }
   };
+
 
   return (
     <div className="App">
@@ -82,8 +90,20 @@ const App = () => {
           <button onClick={handleStartCalculations}>Start Calculations</button>
         </div>
       )}
+
+      {clusters.map((cluster, index) => (
+        <div key={index} className="cluster-results">
+          <h2>Songs similar to {selectedTracks[index].trackName}</h2>
+          <ul>
+            {cluster.map(track => (
+              <li key={track.id}>{track.trackName} - {track.artistName}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
+
 };
 
 export default App;

@@ -1,11 +1,10 @@
-import React from 'react';
 import { useSpotifyToken } from './SpotifyAuthContext';
 import { kmeansClusters } from './kmeans';
 import Track from './Track';
 import axios from 'axios';
 
 const BASE_URL = 'https://api.spotify.com/v1';
-const TRACK_IDS_FILE_PATH = 'res/track_ids.csv';
+const TRACK_IDS_FILE_PATH = '/track_ids.csv';
 
 export function useSpotifyService() {
   const token = useSpotifyToken();
@@ -71,7 +70,7 @@ export function useSpotifyService() {
   };
 
   const getRandomTracks = async () => {
-    return await createTracks(await getSeveralTracks(await getRandomTrackIDs(100)));
+    return await createTracks(await getSeveralTracks(await getRandomTrackIDs(50)));
   };
 
   const getSeveralTracks = async (trackIDs) => {
@@ -90,7 +89,7 @@ export function useSpotifyService() {
 
   const getRandomTrackIDs = async (numIDs) => {
     try {
-      const response = await fetch('/track_ids.csv');
+      const response = await fetch(TRACK_IDS_FILE_PATH);
       const data = await response.text();
       const trackIDs = data.split('\n').map(line => line.trim()).filter(Boolean);
       return shuffleArray(trackIDs).slice(0, numIDs);
