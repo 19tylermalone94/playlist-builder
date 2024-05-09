@@ -132,16 +132,21 @@ const App = () => {
       </div>
       )}
 
-      {clusters.length > 0 && clusters.map((cluster, index) => (
-        <div key={index} className="cluster-results">
-          <h2>Songs similar to {selectedTracks[index].trackName}</h2>
-          <ul>
-            {cluster.map(track => (
-              <TrackItem key={track.id} track={track} />
-            ))}
-          </ul>
-        </div>
-      ))}
+      {clusters.length > 0 && (
+      <>
+        <button className='returnButton' onClick={handleHome}>Return</button>
+        {clusters.map((cluster, index) => (
+          <div key={index} className="cluster-results">
+            <h2>Songs similar to {selectedTracks[index].trackName}</h2>
+            <ul>
+              {cluster.map(track => (
+                <TrackItem key={track.id} track={track} />
+              ))}
+            </ul>
+          </div>
+        ))}
+      </>
+    )}
       <div className='footer'>
         <h2>Powered by Spotify's API</h2>
         <img src="/spotify.jpeg" alt="spotify_icon" />
