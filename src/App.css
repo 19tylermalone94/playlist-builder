@@ -9,14 +9,12 @@
 h1, h2 {
   background-color: var(--item-bg-color);
   border-radius: 8px;
-  border-color: var(--border-color);
-  padding: 10px;
-  border-style: groove;
+  box-shadow: 1px 2px 5px var(--border-color);  padding: 10px;
   color: var(--text-color);
 }
 
 input[type="text"], button {
-  padding: 12px;
+  padding: 10px;
   margin-top: 10px;
   border: none;
   border-radius: 8px;
@@ -25,7 +23,7 @@ input[type="text"], button {
 input[type="text"] {
   width: calc(100% - 84px);
   background-color: #fff;
-  box-shadow: 0 2px 5px var(--border-color);
+  box-shadow: 1px 2px 5px var(--border-color);
 }
 
 button {
@@ -34,19 +32,16 @@ button {
   justify-content: center;
   background-color: var(--button-bg-color);
   color: var(--subtext-color);
-  border: none;
-  padding: 10px 20px;
+  box-shadow: 1px 2px 5px var(--border-color);  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  border-color: var(--border-color);
-  border-style:groove;
 }
 
 input[type="text"], button {
   font-family: 'Montserrat', sans-serif; /* Ensure Montserrat is being used */
   font-weight: 700;
-  padding: 12px;
+  padding: 10px;
   margin-top: 10px;
   border: none;
   border-radius: 8px;
@@ -55,10 +50,8 @@ input[type="text"], button {
 button img {
   width: 50px;
   height: 50px;
-  margin-right: 10px;
   border-radius: 8px;
-  border-color: var(--border-color);
-  border-style: groove;
+  box-shadow: 1px 2px 5px var(--border-color);
 }
 
 button:hover {
@@ -75,8 +68,7 @@ button:hover {
   padding: 10px;
   box-shadow: 0 2px 10px var(--border-color);
   border-radius: 8px;
-  border-color: var(--border-color);
-  border-style:groove;
+  box-shadow: 1px 2px 5px var(--border-color);
 }
 
 .dropdown ul {
@@ -103,8 +95,8 @@ button:hover {
   padding: 10px;
   margin-bottom: 10px;
   transition: background-color 0.3s;
-  border-color: var(--border-color);
-  border-style:groove;
+  gap: 10px;
+  box-shadow: 1px 2px 5px var(--border-color);
 }
 
 .trackItem:hover {
@@ -115,7 +107,6 @@ button:hover {
   width: 50px;
   height: 50px;
   border-radius: 8px;
-  margin-right: 20px;
   object-fit: cover;
 }
 
@@ -132,7 +123,7 @@ button:hover {
 }
 
 .artistName {
-  margin-top: 4px;
+  margin-top:5px;
   font-size: 0.9rem;
   color: var(--text-color);
   font-style: italic;
@@ -141,9 +132,9 @@ button:hover {
 .cluster-results {
   margin-top: 20px;
   padding: 10px;
-  /* background-color: var(--primary-color); */
-  /* box-shadow: 0 2px 5px var(--border-color); */
-  /* border-radius: 8px; */
+  background-color: var(--primary-color);
+  box-shadow: 1px 2px 5px var(--border-color);
+  border-radius: 8px;
 }
 
 @media (max-width: 768px) {
@@ -167,8 +158,7 @@ button:hover {
   background-color: var(--item-bg-color);
   display: flex;
   justify-content: center;
-  border-color: var(--border-color);
-  border-style:groove;
+  box-shadow: 1px 2px 5px var(--border-color);
   border-radius: 8px;
 }
 
@@ -211,12 +201,28 @@ button:hover {
 }
 
 .makePlaylist button {
-  border-color: var(--border-color);
-  border-style:groove;
+  height: 50px;
+  box-shadow: 1px 2px 5px var(--border-color);
 }
 
 .homeButton {
   margin-bottom: 10px;
-  border-color: var(--border-color);
-  border-style:groove;
+  width: 60px;
+  height: 60px;
+  /* box-shadow: 1px 2px 5px var(--border-color); */
+  border-style: dotted;
+  border-color: var(--button-bg-color);
+}
+
+.playPauseButton {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: var(--button-bg-color);
+  color: var(--subtext-color);
+  border-radius: 8px;
+  box-shadow: 1px 2px 5px var(--border-color);
+}
+
+.playPauseButton:hover {
+  background-color: var(--button-hover-bg-color);
 }

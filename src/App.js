@@ -81,8 +81,7 @@ const App = () => {
     <div className="App">
       <div className='header' >
         <button className='homeButton' onClick={handleHome}>
-          <img src="/logo_raw.png" alt="Home" style={{ marginRight: '8px' }} />
-          Home
+          <img src="/logo_raw.png" alt="Home" />
         </button>
       </div>
       {isHome && (
