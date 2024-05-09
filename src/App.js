@@ -135,6 +135,10 @@ const App = () => {
           </ul>
         </div>
       ))}
+      <div className='footer'>
+        <h2>Powered by Spotify's API</h2>
+        <img src="/spotify.png" alt="spotify_icon" />
+      </div>
     </div>
   );
 

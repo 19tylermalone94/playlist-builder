@@ -1,16 +1,17 @@
 :root {
-  --primary-color: #431d63; /* Your primary color */
-  --background-color: #37393a; /* Background color */
-  --button-bg-color: #50e4d0; /* Button background color */
-  --text-color: #1b1b1b; /* Text color */
-  --button-hover-bg-color: #3bad9e; /* Button hover state color */
-  --item-bg-color: #c0ab31; /* Item background color */
-  --item-hover-bg-color: rgb(94, 92, 53); /* Item hover background color */
-  --border-color: #2b0101;
+  --primary-color: #12173d; /* Indigo */
+  --button-bg-color: #1d7a2d; /* Orange */
+  --button-hover-bg-color: #34db50; /* Light Orange */
+  --background-color: #FFFFFF; /* White */
+  --text-color: #f8dede; /* White */
+  --subtext-color: #BDBDBD; /* Light Grey */
+  --border-color: #8f8f8f; /* Dark Grey */
+  --item-bg-color: #37474F; /* Deep Grey Blue */
+  --item-hover-bg-color: #455A64; /* Slightly Lighter Grey Blue */
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--primary-color);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
