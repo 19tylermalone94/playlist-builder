@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const TrackItem = ({ track, onClick, isSelected }) => {
+const TrackItem = ({ track, onClick, isSelected, showFeatures }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const itemStyle = isSelected ? { backgroundColor: '#88864d' } : {};
@@ -37,20 +37,21 @@ const TrackItem = ({ track, onClick, isSelected }) => {
           Your browser does not support the audio element.
         </audio>
       )}
-      <div className="featurePopup" style={{ top: `${popupPosition.top}px`, left: `${popupPosition.left}px` }}>
-        <ul>
-          <li>Acousticness: {Number(track.features[0]).toFixed(2)}</li>
-          <li>Danceability: {Number(track.features[1]).toFixed(2)}</li>
-          <li>Duration: {Number(track.features[2] / 1000).toFixed(0)}s</li>
-          <li>Energy: {Number(track.features[3]).toFixed(2)}</li>
-          <li>Instrumentalness: {Number(track.features[4]).toFixed(2)}</li>
-          <li>Liveness: {Number(track.features[5]).toFixed(2)}</li>
-          <li>Loudness: {Number(track.features[6]).toFixed(2)}dB</li>
-          <li>Speechiness: {Number(track.features[7]).toFixed(2)}</li>
-          <li>Tempo: {Number(track.features[8]).toFixed(0)}BPM</li>
-          <li>Valence: {Number(track.features[9]).toFixed(2)}</li>
-        </ul>
-      </div>
+      {showFeatures && (
+        <div className="featurePopup" style={{ top: `${popupPosition.top}px`, left: `${popupPosition.left}px` }}>
+          <ul>
+            <li>Acousticness: {Number(track.features[0]).toFixed(2)}</li>
+            <li>Danceability: {Number(track.features[1]).toFixed(2)}</li>
+            <li>Duration: {Number(track.features[2] / 1000).toFixed(0)}s</li>
+            <li>Energy: {Number(track.features[3]).toFixed(2)}</li>
+            <li>Instrumentalness: {Number(track.features[4]).toFixed(2)}</li>
+            <li>Liveness: {Number(track.features[5]).toFixed(2)}</li>
+            <li>Loudness: {Number(track.features[6]).toFixed(2)}dB</li>
+            <li>Speechiness: {Number(track.features[7]).toFixed(2)}</li>
+            <li>Tempo: {Number(track.features[8]).toFixed(0)}BPM</li>
+            <li>Valence: {Number(track.features[9]).toFixed(2)}</li>
+          </ul>
+        </div>)}
     </div>
   );
 };

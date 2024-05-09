@@ -19,19 +19,23 @@ const App = () => {
   const { getTracksBySearch, getClusters } = useSpotifyService();
   const [clusters, setClusters] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
+  const [showFeatures, setShowFeatures] = useState(false);
 
   useEffect(() => {
     if (isLoading) {
       const intervalId = setInterval(() => {
         setCurrentMessage(prev => (prev + 1) % messages.length);
-      }, 3000); // Change message every 3 seconds
-
-      return () => clearInterval(intervalId); // Cleanup interval on component unmount
+      }, 3000);
+      return () => clearInterval(intervalId);
     }
   }, [isLoading]);
 
+
+  const toggleFeaturesVisibility = () => {
+    setShowFeatures(prev => !prev);
+  };
 
   const handleHome = () => {
     setIsHome(true);
@@ -102,10 +106,11 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className='header' >
-        <img src="/logo_raw.png" alt="Home" />
+      <div className='header'>
         <h1 className='title'>Playlist Builder</h1>
-        <img src="/logo_raw.png" alt="Home" />
+        <button onClick={toggleFeaturesVisibility}>
+          {showFeatures ? 'Hide Features' : 'Show Features'}
+        </button>
       </div>
       {isLoading && (
         <div className="loading">
@@ -137,7 +142,7 @@ const App = () => {
           <div className={`search-results ${searchResults.length > 0 ? 'show' : ''}`}>
             {searchResults.map((track) => (
             <ul>
-              <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} isSelected={selectedTracks.includes(track)} />
+              <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} isSelected={selectedTracks.includes(track)} showFeatures={showFeatures} />
             </ul>
             ))}
           </div>
@@ -168,7 +173,7 @@ const App = () => {
             <h2>Playlist inspiration: {selectedTracks[index].trackName}, by {selectedTracks[index].artistName}</h2>
             <ul>
               {cluster.map(track => (
-                <TrackItem key={track.id} track={track} />
+                <TrackItem key={track.id} track={track} showFeatures={showFeatures}/>
               ))}
             </ul>
           </div>

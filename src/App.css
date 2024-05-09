@@ -108,7 +108,7 @@ button:hover {
 }
 
 .trackItem:hover {
-  padding: 20px; /* Increase padding *
+  /* padding: 20px; /* Increase padding * */
   box-shadow: 3px 6px 10px var(--border-color); /* Increase shadow */
 }
 
