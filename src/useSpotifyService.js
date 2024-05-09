@@ -1,5 +1,5 @@
 import { useSpotifyToken } from './SpotifyAuthContext';
-import { kmeansClusters } from './kmeans';
+import { useKmeansClusters } from './kmeans';
 import Track from './Track';
 import axios from 'axios';
 
@@ -66,8 +66,8 @@ export function useSpotifyService() {
 
   const getClusters = async (trackIDs) => {
     const userTracks = await createTracks(await getSeveralTracks(trackIDs));
-    const randomTracks = await getRandomTracks();
-    return kmeansClusters(userTracks, randomTracks);
+    const clusters = useKmeansClusters(userTracks);
+    const trackClusters = await getSeveralTracks(clusters.map(c => c.id));
   };
 
   const getRandomTracks = async () => {
@@ -125,6 +125,8 @@ export function useSpotifyService() {
 
   return {
     getTracksBySearch,
-    getClusters
+    getClusters,
+    createTracks,
+    getSeveralTracks
   };
 }
