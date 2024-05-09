@@ -210,6 +210,11 @@ button:hover {
   margin-top: 10%;
 }
 
+.makePlaylist button {
+  border-color: var(--border-color);
+  border-style:groove;
+}
+
 .homeButton {
   margin-bottom: 10px;
   border-color: var(--border-color);
