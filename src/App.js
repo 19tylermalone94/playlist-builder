@@ -11,6 +11,8 @@ const App = () => {
   const [selectedTracks, setSelectedTracks] = useState([]);
   const { getTracksBySearch, getClusters } = useSpotifyService();
   const [clusters, setClusters] = useState([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(true);
+
 
   const handleHome = () => {
     setIsHome(true);
@@ -77,6 +79,10 @@ const App = () => {
     }
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
   return (
     <div className="App">
       <div className='header' >
@@ -116,13 +122,18 @@ const App = () => {
 
       {selectedTracks.length > 0 && clusters.length === 0 && (
         <div className="dropdown">
+        <button onClick={toggleDropdown}>
+          {isDropdownVisible ? '▼ Hide Tracks' : '▲ Show Tracks'}
+        </button>
+        {isDropdownVisible && (
           <ul>
             {selectedTracks.map(track => (
-              <TrackItem key={track.id} track={track} onClick={() => removeSelection(track)} />
+              <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} />
             ))}
           </ul>
-          <button onClick={handleStartCalculations}>Start Calculations</button>
-        </div>
+        )}
+        <button onClick={handleStartCalculations}>Start Calculations</button>
+      </div>
       )}
 
       {clusters.length > 0 && clusters.map((cluster, index) => (
