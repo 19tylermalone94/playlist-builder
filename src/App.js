@@ -114,10 +114,10 @@ const App = () => {
         </div>
       )}
 
-      {selectedTracks.length > 0 && (
+      {selectedTracks.length > 0 && clusters.length === 0 && (
         <div className="dropdown">
           <ul>
-            {selectedTracks.length > 0 && selectedTracks.map(track => (
+            {selectedTracks.map(track => (
               <TrackItem key={track.id} track={track} onClick={() => removeSelection(track)} />
             ))}
           </ul>
