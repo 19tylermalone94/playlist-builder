@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TrackItem = ({ track, onClick, isSelected }) => {
-  const itemStyle = isSelected ? { backgroundColor: '#e8e8e8' } : {};
+  const itemStyle = isSelected ? { backgroundColor: '#88864d' } : {};
   return (
     <div className="trackItem" onClick={onClick} style={itemStyle}>
       <img src={track.albumArtUrl} alt={`Cover art for ${track.trackName}`} className="albumArt" />

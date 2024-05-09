@@ -4,6 +4,7 @@ import TrackItem from './components/TrackItem';
 import './App.css';
 
 const App = () => {
+  const [isHome, setIsHome] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -11,8 +12,20 @@ const App = () => {
   const { getTracksBySearch, getClusters } = useSpotifyService();
   const [clusters, setClusters] = useState([]);
 
+  const handleHome = () => {
+    setIsHome(true);
+    setIsSearching(false);
+    setSearchResults([]);
+    setSearchQuery('');
+    setSelectedTracks([]);
+    setClusters([]);
+  };
+
   const handleNewPlaylist = () => {
+    setIsHome(false);
     setIsSearching(true);
+    setSelectedTracks([]);
+    setClusters([]);
   };
 
   const handleSearch = async () => {
@@ -45,58 +58,78 @@ const App = () => {
       }
     }
   };
+
+  const removeSelection = (track) => {
+    const newSelection = selectedTracks.filter(t => t.id !== track.id);
+    setSelectedTracks(newSelection);
+  };
   
 
   const handleStartCalculations = async () => {
     console.log("Starting calculations with these tracks:", selectedTracks);
+    setIsSearching(false);
     try {
       const result = await getClusters(selectedTracks.map(track => track.id));
       console.log("Cluster results:", result);
-      setClusters(result.clusters); // Assuming result.clusters is an array of cluster objects
+      setClusters(result.clusters);
     } catch (error) {
       console.error("Error in starting calculations:", error);
     }
   };
 
-
   return (
     <div className="App">
-      <button onClick={handleNewPlaylist}>Make a New Playlist</button>
-      {isSearching && (
-        <div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleQueryChange}
-            placeholder="Search for tracks..."
-          />
-          <button onClick={handleSearch}>Search</button>
+      <div className='header' >
+        <button className='homeButton' onClick={handleHome}>
+          <img src="/logo_raw.png" alt="Home" style={{ marginRight: '8px' }} />
+          Home
+        </button>
+      </div>
+      {isHome && (
+        <div className='makePlaylist'>
+          <button onClick={handleNewPlaylist}>Make a New Playlist</button>
         </div>
       )}
-
-      <div className="search-results">
-        {searchResults.map((track) => (
-          <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} isSelected={selectedTracks.includes(track)} />
-        ))}
-      </div>
+      {isSearching && (
+        <div>
+          <div className='searchBar'>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleQueryChange}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+              placeholder="Search for tracks..."
+            />
+            <button onClick={handleSearch}>Search</button>
+          </div>
+          <div className={`search-results ${searchResults.length > 0 ? 'show' : ''}`}>
+            {searchResults.map((track) => (
+              <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} isSelected={selectedTracks.includes(track)} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {selectedTracks.length > 0 && (
         <div className="dropdown">
           <ul>
-            {selectedTracks.map(track => (
-              <TrackItem key={track.id} track={track} />
+            {selectedTracks.length > 0 && selectedTracks.map(track => (
+              <TrackItem key={track.id} track={track} onClick={() => removeSelection(track)} />
             ))}
           </ul>
           <button onClick={handleStartCalculations}>Start Calculations</button>
         </div>
       )}
 
-      {clusters.map((cluster, index) => (
+      {clusters.length > 0 && clusters.map((cluster, index) => (
         <div key={index} className="cluster-results">
           <h2>Songs similar to {selectedTracks[index].trackName}</h2>
           <ul>
             {cluster.map(track => (
-              // <li key={track.id}>{track.trackName} - {track.artistName}</li>
               <TrackItem key={track.id} track={track} />
             ))}
           </ul>

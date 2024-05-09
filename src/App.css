@@ -1,94 +1,113 @@
-/* General body styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  margin: 0;
-  padding: 20px;
-}
-
-/* Main application container */
-div {
-  box-sizing: border-box;
+.App {
+  background-color: #1E4D2B;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 50px;
+  border-color: #59595B;
+  border-style:groove;
+  border-radius: 8px;
 }
 
 /* Header styling */
 h1, h2 {
-  color: #4A90E2;
+  color: #59595B; /* Modern blue */
 }
 
-/* Form styling */
-form {
-  margin-bottom: 20px;
+/* Input and button styling */
+input[type="text"], button {
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px; /* Rounded borders for a softer look */
 }
 
 input[type="text"] {
-  padding: 8px;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 300px;
+  width: calc(100% - 84px); /* Responsive width */
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 button {
-  background-color: #4A90E2;
-  color: white;
+  display: flex;
+  align-items: center; /* Aligns the text and the image vertically */
+  justify-content: center; /* Centers the content horizontally */
+  background-color: #D9782D; /* Color for the button */
+  color: 59595B;
   border: none;
   padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 4px;
+  font-size: 16px;
+  border-color: #59595B;
+  border-style:groove;
+}
+
+button img {
+  width: 50px; /* Suitable size for icons within buttons */
+  height: 50px; /* Maintain aspect ratio */
+  margin-right: 10px; /* Space between the icon and text */
+  border-radius: 8px;
+  border-color: #59595B;
+  border-style: groove;
 }
 
 button:hover {
-  background-color: #357ABD;
+  background-color: rgb(206, 112, 40); /* Darker shade on hover */
 }
 
-/* Table styles */
-table {
+/* Dropdown for selected tracks and clusters */
+.dropdown {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 300px;
+  background: #C8C372;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 10px #282829;
+  border-radius: 8px;
+  border-color: #59595B;
+  border-style:groove;
+}
+
+.dropdown ul {
+  list-style: none;
+  padding: 0;
+
+}
+
+.dropdown ul li, .search-results div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown button {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
-td, th {
-  text-align: left;
-  padding: 8px;
-}
-
-th {
-  background-color: #4A90E2;
-  color: white;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-/* Track and features display */
-.TrackList, .AudioFeatures {
-  margin-top: 20px;
-}
-
+/* Individual track item styling */
 .trackItem {
   display: flex;
-  align-items: center; /* Vertically align items in the center */
-  margin-bottom: 20px; /* Space between each track item */
-  padding: 10px;
-  background-color: #f9f9f9;
+  align-items: center;
+  background-color: #C8C372;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+  border-color: #59595B;
+  border-style:groove;
+}
+
+.trackItem:hover {
+  background-color: #88864d; /* Light blue highlight on hover */
 }
 
 .albumArt {
-  width: 50;
+  width: 50px;
   height: 50px;
-  border-radius: 5px; /* Slightly rounded corners for the image */
-  margin-right: 20px; /* Space between the image and the text */
+  border-radius: 8px;
+  margin-right: 20px;
   object-fit: cover;
 }
 
@@ -105,45 +124,73 @@ tr:nth-child(even) {
 }
 
 .artistName {
-  margin-top: 4px; /* Small top margin to space out track name and artist name */
+  margin-top: 4px;
   font-size: 0.9rem;
   color: #666;
   font-style: italic;
 }
 
-.App {
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 10%px;
-}
-
-.dropdown {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 300px;
-  background: white;
-  border: 1px solid #ccc;
+.cluster-results {
+  margin-top: 20px;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  background-color: #ffe;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 8px;
 }
 
-.dropdown ul {
-  list-style: none;
-  padding: 0;
+/* Ensuring responsiveness and visual alignment */
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+  }
+
+  input[type="text"], button {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .dropdown {
+    width: 95%;
+    left: 2.5%;
+    right: auto;
+  }
 }
 
-.dropdown ul li {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+.header {
+  background-color: #ffe;
+  display: flex;
+  justify-content: center;
+  border-color: #59595B;
+  border-style:groove;
+  border-radius: 8px;
 }
 
-.dropdown button {
-  width: 100%;
+.searchBar {
+  display: flex;
   padding: 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  gap: 10px
+}
+
+.search-results {
   margin-top: 10px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  visibility: hidden;
+}
+
+.search-results.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.makePlaylist {
+  display: flex;
+  justify-content: center;
+  margin-top: 25%;
+}
+
+.homeButton {
+  margin-bottom: 10px;
+  border-color: #59595B;
+  border-style:groove;
 }
