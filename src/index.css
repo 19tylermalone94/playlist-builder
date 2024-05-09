@@ -1,10 +1,10 @@
 :root {
   --primary-color: #12173d; /* Indigo */
-  --button-bg-color: #1d7a2d; /* Orange */
-  --button-hover-bg-color: #34db50; /* Light Orange */
+  --button-bg-color: #1DB954; /* Orange */
+  --button-hover-bg-color: #23e066; /* Light Orange */
   --background-color: #FFFFFF; /* White */
   --text-color: #f8dede; /* White */
-  --subtext-color: #BDBDBD; /* Light Grey */
+  --subtext-color: #191414; /* Light Grey */
   --border-color: #8f8f8f; /* Dark Grey */
   --item-bg-color: #37474F; /* Deep Grey Blue */
   --item-hover-bg-color: #455A64; /* Slightly Lighter Grey Blue */

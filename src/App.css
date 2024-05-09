@@ -33,7 +33,7 @@ button {
   align-items: center;
   justify-content: center;
   background-color: var(--button-bg-color);
-  color: var(--text-color);
+  color: var(--subtext-color);
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
@@ -174,6 +174,7 @@ button:hover {
 .footer img {
   width: 50px;
   height: 50px;
+  border-radius: 8px;
 }
 
 .searchBar {
