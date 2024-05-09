@@ -106,23 +106,29 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className='header'>
-        <h1 className='title'>Playlist Builder</h1>
-        <button onClick={toggleFeaturesVisibility}>
+      <button onClick={toggleFeaturesVisibility}>
           {showFeatures ? 'Hide Features' : 'Show Features'}
-        </button>
+      </button>
+
+      <div className='header'>
+        <img src='/logo_raw.png' alt='builder_logo'/>
+        <h1 className='title'>Playlist Builder</h1>
+        <img src='/logo_raw.png' alt='builder_logo'/>
       </div>
+
       {isLoading && (
         <div className="loading">
           <div className="spinner"></div>
           <div className="loading-message">{messages[currentMessage]}</div>
         </div>
       )}
+
       {isHome && (
         <div className='makePlaylist'>
           <button onClick={handleNewPlaylist}>Make a New Playlist</button>
         </div>
       )}
+
       {isSearching && (
         <div>
           <div className='searchBar'>
@@ -151,35 +157,36 @@ const App = () => {
 
       {selectedTracks.length > 0 && clusters.length === 0 && (
         <div className="dropdown">
-        <button onClick={toggleDropdown}>
-          {isDropdownVisible ? '▼ Hide' : '▲ Show'}
-        </button>
-        {isDropdownVisible && (
-          <ul>
-            {selectedTracks.map(track => (
-              <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} />
-            ))}
-          </ul>
-        )}
-        <button onClick={handleStartCalculations}>Start Calculations</button>
-      </div>
+          <button onClick={toggleDropdown}>
+            {isDropdownVisible ? '▼ Hide' : '▲ Show'}
+          </button>
+          {isDropdownVisible && (
+            <ul>
+              {selectedTracks.map(track => (
+                <TrackItem key={track.id} track={track} onClick={() => toggleTrackSelection(track)} />
+              ))}
+            </ul>
+          )}
+          <button onClick={handleStartCalculations}>Start Calculations</button>
+        </div>
       )}
 
       {clusters.length > 0 && (
-      <div className='cluster-results-container'>
-        <button className='returnButton' onClick={handleHome}>Return</button>
-        {clusters.map((cluster, index) => (
-          <div key={index} className="cluster-results">
-            <h2>Playlist inspiration: {selectedTracks[index].trackName}, by {selectedTracks[index].artistName}</h2>
-            <ul>
-              {cluster.map(track => (
-                <TrackItem key={track.id} track={track} showFeatures={showFeatures}/>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    )}
+        <div className='cluster-results-container'>
+          <button className='returnButton' onClick={handleHome}>Return</button>
+          {clusters.map((cluster, index) => (
+            <div key={index} className="cluster-results">
+              <h2>Playlist inspiration: {selectedTracks[index].trackName}, by {selectedTracks[index].artistName}</h2>
+              <ul>
+                {cluster.map(track => (
+                  <TrackItem key={track.id} track={track} showFeatures={showFeatures}/>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className='footer'>
       <img src="/spotify.jpeg" alt="spotify_icon" />
         <h2>Powered by Spotify's API</h2>
