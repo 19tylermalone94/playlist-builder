@@ -137,7 +137,7 @@ const App = () => {
         <button className='returnButton' onClick={handleHome}>Return</button>
         {clusters.map((cluster, index) => (
           <div key={index} className="cluster-results">
-            <h2>Songs similar to {selectedTracks[index].trackName}</h2>
+            <h2>Playlist inspiration: {selectedTracks[index].trackName}, by {selectedTracks[index].artistName}</h2>
             <ul>
               {cluster.map(track => (
                 <TrackItem key={track.id} track={track} />
