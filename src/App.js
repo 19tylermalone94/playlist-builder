@@ -123,7 +123,7 @@ const App = () => {
       {selectedTracks.length > 0 && clusters.length === 0 && (
         <div className="dropdown">
         <button onClick={toggleDropdown}>
-          {isDropdownVisible ? '▼ Hide Tracks' : '▲ Show Tracks'}
+          {isDropdownVisible ? '▼ Hide' : '▲ Show'}
         </button>
         {isDropdownVisible && (
           <ul>
