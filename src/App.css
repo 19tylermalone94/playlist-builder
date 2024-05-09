@@ -1,72 +1,70 @@
 .App {
-  background-color: #1E4D2B;
   margin: 0 auto;
   max-width: 1200px;
   padding: 50px;
-  border-color: #59595B;
-  border-style:groove;
-  border-radius: 8px;
 }
 
-/* Header styling */
 h1, h2 {
-  color: #59595B; /* Modern blue */
+  background-color: var(--item-bg-color);
+  border-radius: 8px;
+  border-color: var(--border-color);
+  padding: 10px;
+  border-style: groove;
+  color: var(--text-color);
 }
 
-/* Input and button styling */
 input[type="text"], button {
   padding: 12px;
   margin-top: 10px;
   border: none;
-  border-radius: 8px; /* Rounded borders for a softer look */
+  border-radius: 8px;
 }
 
 input[type="text"] {
-  width: calc(100% - 84px); /* Responsive width */
+  width: calc(100% - 84px);
   background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px var(--border-color);
 }
 
 button {
   display: flex;
-  align-items: center; /* Aligns the text and the image vertically */
-  justify-content: center; /* Centers the content horizontally */
-  background-color: #D9782D; /* Color for the button */
-  color: 59595B;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--button-bg-color);
+  color: var(--text-color);
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  border-color: #59595B;
+  border-color: var(--border-color);
   border-style:groove;
 }
 
 button img {
-  width: 50px; /* Suitable size for icons within buttons */
-  height: 50px; /* Maintain aspect ratio */
-  margin-right: 10px; /* Space between the icon and text */
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
   border-radius: 8px;
-  border-color: #59595B;
+  border-color: var(--border-color);
   border-style: groove;
 }
 
 button:hover {
-  background-color: rgb(206, 112, 40); /* Darker shade on hover */
+  background-color: var(--button-hover-bg-color);
 }
 
-/* Dropdown for selected tracks and clusters */
 .dropdown {
   position: fixed;
   bottom: 10px;
   right: 10px;
   width: 300px;
-  background: #C8C372;
-  border: 1px solid #ccc;
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
   padding: 10px;
-  box-shadow: 0 2px 10px #282829;
+  box-shadow: 0 2px 10px var(--border-color);
   border-radius: 8px;
-  border-color: #59595B;
+  border-color: var(--border-color);
   border-style:groove;
 }
 
@@ -86,21 +84,20 @@ button:hover {
   margin-top: 10px;
 }
 
-/* Individual track item styling */
 .trackItem {
   display: flex;
   align-items: center;
-  background-color: #C8C372;
+  background-color: var(--item-bg-color);
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
   transition: background-color 0.3s;
-  border-color: #59595B;
+  border-color: var(--border-color);
   border-style:groove;
 }
 
 .trackItem:hover {
-  background-color: #88864d; /* Light blue highlight on hover */
+  background-color: var(--item-hover-bg-color);
 }
 
 .albumArt {
@@ -119,26 +116,25 @@ button:hover {
 .trackName {
   margin: 0;
   font-size: 1.2rem;
-  color: #333;
+  color: var(--text-color);
   font-weight: bold;
 }
 
 .artistName {
   margin-top: 4px;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-color);
   font-style: italic;
 }
 
 .cluster-results {
   margin-top: 20px;
   padding: 10px;
-  background-color: #ffe;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  border-radius: 8px;
+  /* background-color: var(--primary-color); */
+  /* box-shadow: 0 2px 5px var(--border-color); */
+  /* border-radius: 8px; */
 }
 
-/* Ensuring responsiveness and visual alignment */
 @media (max-width: 768px) {
   .App {
     padding: 10px;
@@ -157,10 +153,10 @@ button:hover {
 }
 
 .header {
-  background-color: #ffe;
+  background-color: var(--primary-color);
   display: flex;
   justify-content: center;
-  border-color: #59595B;
+  border-color: var(--border-color);
   border-style:groove;
   border-radius: 8px;
 }
@@ -191,6 +187,6 @@ button:hover {
 
 .homeButton {
   margin-bottom: 10px;
-  border-color: #59595B;
+  border-color: var(--border-color);
   border-style:groove;
 }

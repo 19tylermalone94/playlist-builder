@@ -1,5 +1,16 @@
+:root {
+  --primary-color: #431d63; /* Your primary color */
+  --background-color: #37393a; /* Background color */
+  --button-bg-color: #50e4d0; /* Button background color */
+  --text-color: #1b1b1b; /* Text color */
+  --button-hover-bg-color: #3bad9e; /* Button hover state color */
+  --item-bg-color: #c0ab31; /* Item background color */
+  --item-hover-bg-color: rgb(94, 92, 53); /* Item hover background color */
+  --border-color: #2b0101;
+}
+
 body {
-  background-color: #ffe;
+  background-color: var(--background-color);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
