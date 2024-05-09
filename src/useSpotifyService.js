@@ -70,21 +70,36 @@ export function useSpotifyService() {
   };
 
   const getRandomTracks = async () => {
-    return await createTracks(await getSeveralTracks(await getRandomTrackIDs(50)));
+    return await createTracks(await getSeveralTracks(await getRandomTrackIDs(100)));
   };
 
   const getSeveralTracks = async (trackIDs) => {
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: `${BASE_URL}/tracks?ids=${trackIDs.join(',')}`,
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      return response.data.tracks;
-    } catch (error) {
-      console.error('Error getting several tracks:', error);
-      return [];
+    const maxBatchSize = 50;
+    let allTracks = [];
+    
+    const chunkArray = (array, size) => {
+      const chunkedArr = [];
+      for (let i = 0; i < array.length; i += size) {
+        chunkedArr.push(array.slice(i, i + size));
+      }
+      return chunkedArr;
+    };
+
+    const batches = chunkArray(trackIDs, maxBatchSize);
+
+    for (const batch of batches) {
+      try {
+        const response = await axios({
+          method: 'GET',
+          url: `${BASE_URL}/tracks?ids=${batch.join(',')}`,
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        allTracks = allTracks.concat(response.data.tracks);
+      } catch (error) {
+        console.error('Error fetching tracks:', error);
+      }
     }
+    return allTracks;
   };
 
   const getRandomTrackIDs = async (numIDs) => {

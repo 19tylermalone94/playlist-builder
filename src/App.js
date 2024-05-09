@@ -12,7 +12,7 @@ const App = () => {
   const [clusters, setClusters] = useState([]);
 
   const handleNewPlaylist = () => {
-    setIsSearching(true); // Show the search bar
+    setIsSearching(true);
   };
 
   const handleSearch = async () => {
@@ -84,7 +84,7 @@ const App = () => {
         <div className="dropdown">
           <ul>
             {selectedTracks.map(track => (
-              <li key={track.id}>{track.trackName} - {track.artistName}</li>
+              <TrackItem key={track.id} track={track} />
             ))}
           </ul>
           <button onClick={handleStartCalculations}>Start Calculations</button>
@@ -96,7 +96,8 @@ const App = () => {
           <h2>Songs similar to {selectedTracks[index].trackName}</h2>
           <ul>
             {cluster.map(track => (
-              <li key={track.id}>{track.trackName} - {track.artistName}</li>
+              // <li key={track.id}>{track.trackName} - {track.artistName}</li>
+              <TrackItem key={track.id} track={track} />
             ))}
           </ul>
         </div>

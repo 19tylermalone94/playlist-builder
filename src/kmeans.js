@@ -1,6 +1,9 @@
 export const kmeansClusters = (userSelectedTracks, randomTracks) => {
   const centroids = normalize(userSelectedTracks);
-  const population = normalize(randomTracks);
+  const rawPopulation = normalize(randomTracks);
+
+  const population = getClosest50(rawPopulation, centroids);
+
   console.log('Initial centroids:', centroids);
   console.log('Population:', population);
 
@@ -46,6 +49,18 @@ const normalize = (tracks) => {
     }
     return { ...track, features: normalizedFeatures };
   });
+};
+
+const getClosest50 = (rawPopulation, centroids) => {
+  const avgSelectedFeatures = averageFeatures(centroids);
+  const distances = rawPopulation.map(track => {
+    return {
+      track,
+      distance: euclideanDistance(track.features, avgSelectedFeatures)
+    };
+  });
+  distances.sort((a, b) => a.distance - b.distance);
+  return distances.slice(0, 50).map(item => item.track);
 };
 
 const euclideanDistance = (features1, features2) => {
