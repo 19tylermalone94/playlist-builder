@@ -191,7 +191,7 @@ const App = () => {
       )}
 
       {isSearching && (
-        <div>
+        <div className='searchProcess'>
           <div className='searchBar'>
             <input
               type="text"
@@ -248,12 +248,14 @@ const App = () => {
             />
           </div>
           <div className='genreResults'>
-              {filteredGenres.map((genre, index) => (
-                <div className='genreItem' key={index} onClick={() => selectGenre(genre)}>
-                  {genre.genres}
-                </div>
-              ))}
-            </div>
+            {filteredGenres.map((genre, index) => (
+              <div className={`genreItem ${selectedGenres.some(g => g.genres === genre.genres) ? 'selected' : ''}`}
+                  key={index}
+                  onClick={() => selectGenre(genre)}>
+                {genre.genres}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
