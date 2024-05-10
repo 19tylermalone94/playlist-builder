@@ -1,7 +1,7 @@
-export const kmeansClusters = (userSelectedTracks, rawPopulation) => {
+export const kmeansClusters = (userSelectedTracks, rawPopulation, rawWeights) => {
   const centroids = normalize(userSelectedTracks);
   const population = normalize(rawPopulation);
-
+  const weights = normalizeWeights(rawWeights);
   console.log('Initial centroids:', centroids);
   console.log('Population:', population);
 
@@ -12,7 +12,7 @@ export const kmeansClusters = (userSelectedTracks, rawPopulation) => {
       let closestCentroidIndex = 0;
       let minDistance = Infinity;
       centroids.forEach((centroid, index) => {
-        const distance = euclideanDistance(track.features, centroid.features);
+        const distance = euclideanDistance(track.features, centroid.features, weights);
         if (distance < minDistance) {
           minDistance = distance;
           closestCentroidIndex = index;
@@ -30,7 +30,7 @@ export const kmeansClusters = (userSelectedTracks, rawPopulation) => {
   const topTenClusters = clusters.map(cluster => {
     const seen = new Set();
     const sorted = cluster.sort((a, b) => {
-      return euclideanDistance(a.features, centroids[clusters.indexOf(cluster)].features) - euclideanDistance(b.features, centroids[clusters.indexOf(cluster)].features);
+      return euclideanDistance(a.features, centroids[clusters.indexOf(cluster)].features, weights) - euclideanDistance(b.features, centroids[clusters.indexOf(cluster)].features, weights);
     });
     const topTen = [];
     for (let track of sorted) {
@@ -64,14 +64,25 @@ const normalize = (tracks) => {
   });
 };
 
-const euclideanDistance = (features1, features2) => {
+function normalizeWeights(rawWeights) {
+  const total = Object.values(rawWeights).reduce((sum, weight) => sum + weight, 0);
+  const normalizedWeights = {};
+  for (const key in rawWeights) {
+    normalizedWeights[key] = rawWeights[key] / total;
+  }
+  return normalizedWeights;
+}
+
+const euclideanDistance = (features1, features2, weights) => {
   const featureNames = Object.keys(features1);
   let sum = 0;
   featureNames.forEach(feature => {
-    sum += (features1[feature] - features2[feature]) ** 2;
+    let weight = weights[feature] || 1;  // Default to 1 if no weight is provided
+    sum += (weight * (features1[feature] - features2[feature])) ** 2;
   });
   return Math.sqrt(sum);
 };
+
 
 const averageFeatures = (tracks) => {
   const featureNames = Object.keys(tracks[0].features);

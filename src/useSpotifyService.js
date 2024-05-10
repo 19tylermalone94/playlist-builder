@@ -79,10 +79,11 @@ export function useSpotifyService() {
     }
   };
 
-  const getClusters = async (trackIDs) => {
+  const getClusters = async (trackIDs, selectedGenres) => {
     const userTracks = await createSimpleTracks(await getSeveralTracks(trackIDs));
     const population = await getTracksFromFile();
-    const { centroids, topTenClusters } = kmeansClusters(userTracks, population);
+    const weights = calculateGenreWeights(selectedGenres);
+    const { centroids, topTenClusters } = kmeansClusters(userTracks, population, weights);
     const trackCentroids = await simpleTracksToTracks(centroids);
     const trackClusters = await Promise.all(topTenClusters.map(async (cluster) => {
         return await simpleTracksToTracks(cluster);
@@ -92,7 +93,25 @@ export function useSpotifyService() {
     console.log(trackClusters);
 
     return { trackCentroids, trackClusters };
-};
+  };
+
+  const calculateGenreWeights = (selectedGenres) => {
+    const featureNames = ['acousticness', 'danceability', 'duration_ms', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness', 'tempo', 'valence'];
+    let sumFeatures = {};
+    selectedGenres.forEach(genre => {
+      featureNames.forEach(feature => {
+        if (!sumFeatures[feature]) {
+          sumFeatures[feature] = 0;
+        }
+        sumFeatures[feature] += parseFloat(genre[feature]);
+      });
+    });
+    let avgWeights = {};
+    featureNames.forEach(feature => {
+      avgWeights[feature] = sumFeatures[feature] / selectedGenres.length;
+    });
+    return avgWeights;
+  };
 
   const getTracksFromFile = async () => {
     try {
