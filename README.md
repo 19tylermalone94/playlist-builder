@@ -16,7 +16,7 @@ I decided that it would be appropriate to remain with and expand upon that idea,
 * get the feature arrays for the selected tracks, and average the feature array for genre.
 * read in the 114,000 tracks from the dataset.
 * normalize all features using min-mix normalization.
-* normalize the genre feature array such that the sum of its elements is 0. This will serve as the weight vector.
+* normalize the genre feature array such that the sum of its elements is 1. This will serve as the weight vector.
 * using the track dataset, selected tracks as inital centroids, and weight vector made from genre selections, perform Kmeans Clustering.
 * return the 10 closest tracks to the centroid for each cluster.
 
