@@ -1,7 +1,8 @@
 # playlist-builder
 
 ## Overview
-[![Watch the Video](https://i.ytimg.com/an_webp/D6Kzif93vKo/mqdefault_6s.webp?du=3000&sqp=CL70-7EG&rs=AOn4CLA9D74tSwv72Wulr0_8C5GRxdI6Dw)](https://www.youtube.com/watch?v=D6Kzif93vKo)
+
+Watch demo here: [![Watch the Video](https://i.ytimg.com/an_webp/D6Kzif93vKo/mqdefault_6s.webp?du=3000&sqp=CL70-7EG&rs=AOn4CLA9D74tSwv72Wulr0_8C5GRxdI6Dw)](https://www.youtube.com/watch?v=D6Kzif93vKo)
 
 After selecting some of your favorite tracks and genres, this app then uses a Kmeans Clustering algorithm to calculate recommendations for new songs.
 
